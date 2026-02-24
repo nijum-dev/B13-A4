@@ -5,30 +5,15 @@ let total = document.getElementById('total');
 let interviewCount = document.getElementById('interviewCount');
 let rejectedCount = document.getElementById('rejectedCount');
 
-// console.log('interviewCount element:', interviewCount);
-// console.log('rejectedCount element:', rejectedCount);
 
 const allCardSections = document.querySelectorAll('.allCards');
 const mainContainer = document.querySelector('main')
-// console.log(mainContainer);
+
 
 const allFilterBtn = document.getElementById('all-filter-btn');
 const interviewFilterBtn = document.getElementById('interview-filter-btn');
 const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
 
-// allFilterBtn.addEventListener('click', function(){
-//     console.log("click all");
-// });
-
-// interviewFilterBtn.addEventListener('click', function(){
-//     console.log("click interview");
-// });
-
-// rejectedFilterBtn.addEventListener('click', function(){
-//     console.log("click rejected");
-// });
-
-// interviewList.push({name:'employee 1'},{name:'employee 2'})
 
  function calculateCount(){
     total.innerText = allCardSections.length
@@ -36,25 +21,144 @@ const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
     rejectedCount.innerText = rejectedList.length
 
  }
- calculateCount()
 
- function toggleStyle(id){
-    allFilterBtn.classList.remove('bg-blue-500','text-white')
-    interviewFilterBtn.classList.remove('bg-blue-500', 'text-white')
-    rejectedFilterBtn.classList.remove('bg-blue-500', 'text-white')
+calculateCount()
 
-    const selected = document.getElementById(id)
-    selected.classList.add('bg-blue-500', 'text-white')
-    // allFilterBtn.classList.add('bg-gray-300',   'text-blue-500')
-    // interviewFilterBtn.classList.add('bg-blue-500', 'text-white')
-    // rejectedFilterBtn.classList.add('bg-blue-500', 'text-white')
 
-    // console.log(id);
+window.addEventListener('DOMContentLoaded', function() {
+  
+   const jobsCountElem = document.querySelector('main > div.flex.justify-between > p');
+   const allCards = document.querySelectorAll('.allCards');
+   for (let i = 0; i < allCards.length; i++) {
+      const section = allCards[i];
+      const interviewBtn = section.querySelector('.interview-btn');
+      const rejectBtn = section.querySelector('.reject-btn');
 
+      
+      const binImg = section.querySelector('img[src$="bin.png"]');
+      if (binImg) {
+         binImg.style.cursor = 'pointer';
+         binImg.addEventListener('click', function() {
+            section.remove();
+            updateCounts();
+            updateJobsCount();
+         });
+      }
+
+      interviewBtn.addEventListener('click', function() {
+         
+         interviewBtn.classList.add('bg-green-600', 'text-white');
+         interviewBtn.classList.remove('text-green-600');
+       
+         rejectBtn.classList.remove('bg-red-600', 'text-white');
+         rejectBtn.classList.add('text-red-500');
+        
+         const statusP = Array.from(section.querySelectorAll('p')).find(p => p.textContent.trim() === 'Not Applied' || p.textContent.trim() === 'Rejected' || p.textContent.trim() === 'Interview');
+         if (statusP) statusP.textContent = 'Interview';
+         
+         const selected = document.querySelector('.bg-blue-500.text-white');
+         if (selected && selected.id !== 'all-filter-btn') {
+            toggleStyle(selected.id);
+         } else {
+            toggleStyle('all-filter-btn');
+         }
+         updateCounts();
+      });
+
+      rejectBtn.addEventListener('click', function() {
+        
+         rejectBtn.classList.add('bg-red-600', 'text-white');
+         rejectBtn.classList.remove('text-red-500');
+        
+         interviewBtn.classList.remove('bg-green-600', 'text-white');
+         interviewBtn.classList.add('text-green-600');
+         
+         const statusP = Array.from(section.querySelectorAll('p')).find(p => p.textContent.trim() === 'Not Applied' || p.textContent.trim() === 'Interview' || p.textContent.trim() === 'Rejected');
+         if (statusP) statusP.textContent = 'Rejected';
      
-     console.log(selected);
+         const selected = document.querySelector('.bg-blue-500.text-white');
+         if (selected && selected.id !== 'all-filter-btn') {
+            toggleStyle(selected.id);
+         } else {
+            toggleStyle('all-filter-btn');
+         }
+         updateCounts();
+      });
+   
+   function updateCounts() {
+      const allCards = document.querySelectorAll('.allCards');
+      let interview = 0;
+      let rejected = 0;
+      for (let i = 0; i < allCards.length; i++) {
+         const section = allCards[i];
+         const interviewBtn = section.querySelector('.interview-btn');
+         const rejectBtn = section.querySelector('.reject-btn');
+         const isInterview = interviewBtn.classList.contains('bg-green-600');
+         const isRejected = rejectBtn.classList.contains('bg-red-600');
+         if (isInterview) interview++;
+         if (isRejected) rejected++;
+      }
+      total.innerText = allCards.length;
+      interviewCount.innerText = interview;
+      rejectedCount.innerText = rejected;
+   }
 
-    // selected,classList.remove('bg-gray-300', 'text-blue-300')
-    // selected.classList.add('bg-blue-500','text-white')
- }
+  
+   function updateJobsCount() {
+      const allCards = document.querySelectorAll('.allCards');
+      if (jobsCountElem) {
+         jobsCountElem.textContent = allCards.length + ' jobs';
+      }
+   }
+   }
+
+   if (jobsCountElem) {
+      jobsCountElem.textContent = allCards.length + ' jobs';
+   }
+});
+
+function toggleStyle(id) {
+   allFilterBtn.classList.remove('bg-blue-500', 'text-white');
+   interviewFilterBtn.classList.remove('bg-blue-500', 'text-white');
+   rejectedFilterBtn.classList.remove('bg-blue-500', 'text-white');
+
+   const selected = document.getElementById(id);
+   selected.classList.add('bg-blue-500', 'text-white');
+
+  
+   const allCards = document.querySelectorAll('.allCards');
+   let interview = 0;
+   let rejected = 0;
+   for (let i = 0; i < allCards.length; i++) {
+      const section = allCards[i];
+      const interviewBtn = section.querySelector('.interview-btn');
+      const rejectBtn = section.querySelector('.reject-btn');
+      const isInterview = interviewBtn.classList.contains('bg-green-600');
+      const isRejected = rejectBtn.classList.contains('bg-red-600');
+
+      if (id === 'all-filter-btn') {
+         section.style.display = '';
+      } else if (id === 'interview-filter-btn') {
+         if (isInterview) {
+            section.style.display = '';
+         } else {
+            section.style.display = 'none';
+         }
+      } else if (id === 'rejected-filter-btn') {
+         if (isRejected) {
+            section.style.display = '';
+         } else {
+            section.style.display = 'none';
+         }
+      }
+
+      if (isInterview) interview++;
+      if (isRejected) rejected++;
+   }
+
+ 
+   total.innerText = allCards.length;
+   interviewCount.innerText = interview;
+   rejectedCount.innerText = rejected;
+}
 
