@@ -1,7 +1,5 @@
-let interviewList = [{name :'emp1'}];
+let interviewList = [];
 let rejectedList = [];
-
-
 
 let total = document.getElementById('total');
 let interviewCount = document.getElementById('interviewCount');
@@ -18,19 +16,19 @@ const allFilterBtn = document.getElementById('all-filter-btn');
 const interviewFilterBtn = document.getElementById('interview-filter-btn');
 const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
 
-allFilterBtn.addEventListener('click', function(){
-    console.log("click all");
-});
+// allFilterBtn.addEventListener('click', function(){
+//     console.log("click all");
+// });
 
-interviewFilterBtn.addEventListener('click', function(){
-    console.log("click interview");
-});
+// interviewFilterBtn.addEventListener('click', function(){
+//     console.log("click interview");
+// });
 
-rejectedFilterBtn.addEventListener('click', function(){
-    console.log("click rejected");
-});
+// rejectedFilterBtn.addEventListener('click', function(){
+//     console.log("click rejected");
+// });
 
-interviewList.push({name:'employee 1'},{name:'employee 2'})
+// interviewList.push({name:'employee 1'},{name:'employee 2'})
 
  function calculateCount(){
     total.innerText = allCardSections.length
@@ -39,4 +37,24 @@ interviewList.push({name:'employee 1'},{name:'employee 2'})
 
  }
  calculateCount()
+
+ function toggleStyle(id){
+    allFilterBtn.classList.remove('bg-blue-500','text-white')
+    interviewFilterBtn.classList.remove('bg-blue-500', 'text-white')
+    rejectedFilterBtn.classList.remove('bg-blue-500', 'text-white')
+
+    const selected = document.getElementById(id)
+    selected.classList.add('bg-blue-500', 'text-white')
+    // allFilterBtn.classList.add('bg-gray-300',   'text-blue-500')
+    // interviewFilterBtn.classList.add('bg-blue-500', 'text-white')
+    // rejectedFilterBtn.classList.add('bg-blue-500', 'text-white')
+
+    // console.log(id);
+
+     
+     console.log(selected);
+
+    // selected,classList.remove('bg-gray-300', 'text-blue-300')
+    // selected.classList.add('bg-blue-500','text-white')
+ }
 
